@@ -1,0 +1,51 @@
+body{
+  font-family: Calibri;
+  background-color: #efefef;
+}
+
+#page{
+  margin-left: 200px;
+  margin-top: -10px;
+  width: 700px;
+  background-color: #fcfcfc;
+  padding: 10px 50px;
+}
+
+.request{
+  display: block;
+  background-color: #e7f2fa;
+  border-top: 2px solid #6ab0de;
+  padding: 10px;
+  font-weight: bold;
+  maring-bottom: 50px;
+}
+
+a, a:visited{
+  text-decoration: none;
+  color: #2e90d1;
+}
+
+a:hover{
+  color: #6ab0de;
+}
+
+table{
+  margin: 20px;
+}
+
+th{
+  text-align: left;
+}  
+
+h2{
+  color: #206592;
+}  
+
+h3{
+  font-size: 100%;
+}  
+
+.codeblock{
+  padding: 10px;
+  border: 1px solid #777777;
+}  

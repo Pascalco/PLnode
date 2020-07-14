@@ -1,0 +1,212 @@
+<html>
+<head>
+<title>PLnode</title>
+
+<link href="/static/style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="page">
+
+<h1>PLnode</h1>
+
+API for Wikidata services.
+
+<h2>Constraint check</h2>
+
+<code class="request">GET //plnode.toolforge.org/cc</code><br />
+
+Checks if the submitted statement violates a property constraint on Wikidata. Intended use: to check if a statement violates a constraint before it is added to Wikidata.
+
+<table class="field-list" frame="void">
+
+<tr><th>Parameters:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><b>entity</b> – Wikidata entity id</li>
+        <li><b>statement</b> – JSON represention of a statement</li>
+        <li><b>constraints</b> – constraints to be checked.<br />Values (separate with |): all, Q21502410, Q21510852, Q52004125, Q21510851, Q21514353, Q54554025, Q21502838, Q21502404, Q52848401, Q21510855, Q21503247, Q21510856, Q51723761, Q52558054, Q21510859, Q53869507, Q21510860, Q19474404, Q52060874, Q21510862, Q21503250, Q21510864, Q21510865</li>
+    </ul>
+</td></tr>
+
+<tr><th colspan="2">Response Headers:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-type</a> – <i>application/json</i></li>
+    </ul>
+</td></tr>
+
+<tr><th colspan="2">Status codes:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Report successfully returned</li>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Constraint check could not be processed</li>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Constraint check could not be processed</li>
+    </ul>
+</td></tr>
+
+</table>
+
+
+<h3>Example request 1</h3>
+
+<div class="codeblock">
+<code>GET //plnode.toolforge.org/cc?entity=Q165713&statement={"mainsnak": {"snaktype": "value","property": "P852","datavalue": {"value": {"entity-type": "item","id": "Q1180639"},"type": "wikibase-entityid"},"datatype": "wikibase-item"}}&constraints=Q21510864|Q21510865</code>
+</div>
+
+<h3>Example response 1</h3>
+<div class="codeblock">
+    <code>{<br />
+        "violations":2,<br />
+        "problems":[{"constraint":"Q21510864","text":"value requires statement violation"},{"constraint":"Q21510865","text":"value type violation"}]<br />
+    }
+    </code>
+</div>
+
+<h3>Example request 2</h3>
+
+<div class="codeblock">
+<code>GET //plnode.toolforge.org/cc?entity=Q23481&statement={"mainsnak": {"snaktype": "value","property": "P1138","datavalue": {"value": "8154207","type": "string"},"datatype": "external-id"}}&constraints=all</code>
+</div>
+
+<h3>Example response 2</h3>
+<div class="codeblock">
+    <code>{<br />
+        "violations":0,<br />
+        "problems":[]<br />
+    }
+    </code>
+</div>
+
+<h3>Known limitations</h3>
+<ul>
+    <li>range constraint (Q21510860): BC dates are treated as 0000-01-01</li>
+    <li>format constraint (Q21502404): PCRE syntax is not fully supported</li>
+    <li>special values <i>unknown value</i> and <i>no value</i> can cause wrong responses</li>
+    <li>suggestion constraints are ignored, mandatory and normal constraints are not distinguished</li>
+</ul>
+
+
+<h2>Exists</h2>
+<code class="request">GET //plnode.toolforge.org/exists</code><br />
+
+Checks if the submitted property or property simple value pair already exists on the given entity.
+
+
+<table class="field-list" frame="void">
+
+<tr><th>Parameters:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><b>entity</b> – Wikidata entity id</li>
+        <li><b>property</b> – Wikidata property</li>
+        <li><b>value</b> – optional; only provide simple value, e.g. entity id, string, quantity without unit, monolingual texts without language. For geocoordinates write the value in the form lat|lon with lat and lon in decimal degrees. Geocoordinates count as identical if they differ less than 0.001° on both latitude and longitude.
+    </ul>
+</td></tr>
+
+<tr><th colspan="2">Response Headers:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-type</a> – <i>application/json</i></li>
+    </ul>
+</td></tr>
+
+<tr><th colspan="2">Status codes:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Report successfully returned</li>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Existence chck could not be processed</li>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Existence check could not be processed</li>
+    </ul>
+</td></tr>
+
+</table>
+
+
+<h3>Example request 1</h3>
+
+<div class="codeblock">
+<code>GET //plnode.toolforge.org/exists?entity=Q2013&property=P277</code>
+</div>
+
+<h3>Example response 1</h3>
+<div class="codeblock">
+    <code>{<br />
+        "exists":true<br />
+    }
+    </code>
+</div>
+
+
+<h3>Example request 2</h3>
+
+<div class="codeblock">
+<code>GET plnode.toolforge.org/exists?entity=Q2013&property=P277&value=Q2378</code>
+</div>
+
+<h3>Example response 2</h3>
+<div class="codeblock">
+    <code>{<br />
+        "exists":false<br />
+    }
+    </code>
+</div>
+
+
+
+<h2>Triple count</h2>
+
+<code class="request">GET //plnode.toolforge.org/triplecount</code><br />
+
+Counts the number of RDF triples.
+
+<table class="field-list" frame="void">
+
+<tr><th>Parameters:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><b>query</b> – SPARQL query</li>
+    </ul>
+</td></tr>
+
+<tr><th colspan="2">Response Headers:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-type</a> – <i>application/json</i></li>
+    </ul>
+</td></tr>
+
+<tr><th colspan="2">Status codes:</th></tr>
+<tr><td></td><td>
+    <ul>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Report successfully returned</li>
+        <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Triple count could not be processed</li>
+    </ul>
+</td></tr>
+
+</table>
+
+<h3>Example request</h3>
+
+<div class="codeblock">
+<code>GET //plnode.toolforge.org/triplecount?query=SELECT ?a WHERE {wd:Q42 p:P735 ?o}</code>
+</div>
+
+<h3>Example response</h3>
+<div class="codeblock">
+    <code>{<br />
+        "count":2<br />
+    }
+    </code>
+</div>
+
+
+
+
+<h2>Edit</h2>
+unstable, not documented
+
+</div>
+
+</body>
+</html>

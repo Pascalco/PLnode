@@ -1,12 +1,13 @@
-const own = 'https://plnode.toolforge.org';
-const queryEndpoint = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?';
-const wdAPI = 'https://www.wikidata.org/w/api.php';
-const commonsAPI = 'https://commons.wikimedia.org/w/api.php?';
-const ldf = 'https://query.wikidata.org/bigdata/ldf';
+const own = "https://plnode.toolforge.org";
+const queryEndpoint = "https://query.wikidata.org/bigdata/namespace/wdq/sparql?";
+const wdAPI = "https://www.wikidata.org/w/api.php";
+const commonsAPI = "https://commons.wikimedia.org/w/api.php?";
+const ldf = "https://query.wikidata.org/bigdata/ldf";
 const headers = {
-  'User-Agent': 'PLnode'
+  "User-Agent": "PLnode",
 };
-const prefix = '\
+const prefix =
+  "\
  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
  PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>\
@@ -38,14 +39,6 @@ const prefix = '\
  PREFIX prv: <http://www.wikidata.org/prop/reference/value/>\
  PREFIX prn: <http://www.wikidata.org/prop/reference/value-normalized/>\
  PREFIX wdno: <http://www.wikidata.org/prop/novalue/>\
- PREFIX hint: <http://www.bigdata.com/queryHints#>';
+ PREFIX hint: <http://www.bigdata.com/queryHints#>";
 
-export {
-  own,
-  queryEndpoint,
-  wdAPI,
-  commonsAPI,
-  ldf,
-  headers,
-  prefix
-}
+export { own, queryEndpoint, wdAPI, commonsAPI, ldf, headers, prefix };

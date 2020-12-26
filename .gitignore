@@ -1,0 +1,4 @@
+./credentials.mjs
+/node_modules
+*.code-workspace
+credentials.mjs

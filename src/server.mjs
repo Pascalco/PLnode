@@ -1,6 +1,5 @@
 import express from "express";
 import bodyParser from "body-parser";
-import path from "path";
 import cookieParser from "cookie-parser";
 import { authorize } from "./authorize.mjs";
 import { profile } from "./profile.mjs";
@@ -9,6 +8,7 @@ import { constraintCheck } from "./constraintCheck.mjs";
 import { tripleCount } from "./tripleCount.mjs";
 import { edit } from "./edit.mjs";
 import { exists } from "./exists.mjs";
+import { categoryScan } from "./categoryScan.mjs";
 import { harvester } from "./harvester.mjs";
 
 let app = express();
@@ -46,6 +46,7 @@ app.get("/cc", constraintCheck);
 app.get("/edit", edit);
 app.get("/triplecount", tripleCount);
 app.get("/exists", exists);
+app.get("/categoryscan", categoryScan);
 app.post("/harvester", harvester);
 app.get("/", function (req, res) {
   res.sendFile("doc.html", { root: "public" });

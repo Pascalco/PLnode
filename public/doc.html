@@ -201,6 +201,71 @@ Counts the number of RDF triples.
 </div>
 
 
+<h2>Category scan</h2>
+
+<code class="request">GET //plnode.toolforge.org/categroyscan</code><br />
+
+Returns all pages in a category, including its subcategories.
+
+<table class="field-list" frame="void">
+
+    <tr>
+        <th>Parameters:</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <ul>
+                <li><b>category</b> – category to scan</li>
+                <li><b>site</b> – database name</li>
+                <li><b>depth</b> – depth of subcategories</li>
+                <li><b>namespace</b> – namespace of returned pages</li>
+            </ul>
+        </td>
+    </tr>
+
+    <tr>
+        <th colspan="2">Response Headers:</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <ul>
+                <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-type</a> –
+                    <i>application/json</i></li>
+            </ul>
+        </td>
+    </tr>
+
+    <tr>
+        <th colspan="2">Status codes:</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <ul>
+                <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Report
+                    successfully returned</li>
+                <li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server
+                        Error</a> – categry scan could not be processed</li>
+            </ul>
+        </td>
+    </tr>
+
+</table>
+
+<h3>Example request</h3>
+
+<div class="codeblock">
+    <code>GET //plnode.toolforge.org/categoryscan?category=Airports_in_Berlin&site=enwiki&depth=0&namespace=0</code>
+</div>
+
+<h3>Example response</h3>
+<div class="codeblock">
+    <code>["Berlin_Tegel_Airport","Berlin_Brandenburg_Airport","Berlin_Tempelhof_Airport","Johannisthal_Air_Field","Airports_of_Berlin","RAF_Gatow"]</code>
+</div>
+
+
 
 
 <h2>Edit</h2>

@@ -1,7 +1,7 @@
 import * as util from "./util.mjs";
 
 function logout(req, res) {
-  const con = util.createSQLconnection("wikidata");
+  const con = util.createSQLconnectionTools("wikidata");
   util
     .getOauthTokens(req.query.token)
     .then(tokens => {

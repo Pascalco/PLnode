@@ -47,7 +47,17 @@ function parseDate(datestring) {
   }
 }
 
-function createSQLconnection(database) {
+function createSQLconnectionReplica(database) {
+  const connection = mysql.createConnection({
+    host: "enwiki.analytics.db.svc.eqiad.wmflabs",
+    user: credentials.sqluser,
+    password: credentials.sqlpwd,
+    database: `${database}_p`,
+  });
+  return connection;
+}
+
+function createSQLconnectionTools(database) {
   const connection = mysql.createConnection({
     host: "tools.db.svc.eqiad.wmflabs",
     user: credentials.sqluser,
@@ -66,7 +76,7 @@ function getOauthTokens(token) {
       if (err) {
         return reject(0);
       }
-      const con = createSQLconnection("wikidata");
+      const con = createSQLconnectionTools("wikidata");
       con
         .promise()
         .query(`SELECT oauth, oauth_validtill FROM users WHERE id = "${decoded.id}" LIMIT 1`)
@@ -178,4 +188,14 @@ function apiQuery(url, data, tokenKey, tokenSecret) {
   });
 }
 
-export { uriFullEncode, formatValueForSPARQL, parseDate, apiQuery, signRequest, createSQLconnection, getUserinfo, getOauthTokens };
+export {
+  uriFullEncode,
+  formatValueForSPARQL,
+  parseDate,
+  apiQuery,
+  signRequest,
+  createSQLconnectionReplica,
+  createSQLconnectionTools,
+  getUserinfo,
+  getOauthTokens,
+};

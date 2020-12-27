@@ -33,7 +33,7 @@ function authorize(req, res) {
         util
           .getUserinfo(tokens)
           .then(response => {
-            const con = util.createSQLconnection("wikidata");
+            const con = util.createSQLconnectionTools("wikidata");
             const validtill = new Date(+new Date() + 86400000 * 30).toISOString().slice(0, 19).replace("T", " ");
             con
               .promise()

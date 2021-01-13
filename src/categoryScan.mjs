@@ -1,4 +1,6 @@
+import axios from "axios";
 import * as util from "./util.mjs";
+import * as c from "./config.mjs";
 
 function getPages(con, allPages, toDo, depth, namespace) {
   return new Promise((resolve, reject) => {
@@ -49,16 +51,16 @@ function categoryScan(req, res) {
       },
     });
   }
-  if (!("site" in data)) {
+  if (!("servername" in data)) {
     res.status(500).json({
       error: {
         code: "param-missing",
-        info: 'The required parameter "site" was missing.',
+        info: 'The required parameter "servername" was missing.',
       },
     });
   }
   const category = data.category.replace(/ /g, "_");
-  const site = data.site;
+  const servername = data.servername;
   let depth;
   if ("depth" in data) {
     depth = parseInt(data.depth);
@@ -72,24 +74,43 @@ function categoryScan(req, res) {
     namespace = 0;
   }
 
-  const con = util.createSQLconnectionReplica(site);
-  getPages(con, [], [category], depth, namespace)
-    .then(pages => {
-      res.json([...new Set(pages)]);
+  let qs = {
+    action: "query",
+    meta: "siteinfo",
+    siprop: "general",
+    format: "json",
+    origin: "*",
+  };
+  axios
+    .get(`https://${servername}/w/api.php`, { params: qs, headers: c.headers })
+    .then(response => {
+      const site = response.data.query.general.wikiid;
+      const con = util.createSQLconnectionReplica(site);
+      getPages(con, [], [category], depth, namespace)
+        .then(pages => {
+          res.json([...new Set(pages)]);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({
+            error: {
+              code: "unknown",
+              info: err,
+            },
+          });
+        })
+        .finally(() => {
+          con.destroy();
+        });
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         error: {
           code: "unknown",
           info: err,
         },
       });
-    })
-    .finally(() => {
-      con.destroy();
     });
-  return 1;
 }
 
 export { categoryScan };

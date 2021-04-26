@@ -15,7 +15,7 @@ function getPages(con, allPages, toDo, depth, namespace) {
         toDo = [];
         for (let result of results) {
           if (result.page_namespace == namespace) {
-            allPages.push(result.page_title.toString("utf8"));
+            allPages.push(result.page_title.toString("utf8").replace(/_/g, " "));
           }
           if (result.page_namespace == 14) {
             toDo.push(result.page_title.toString("utf8"));

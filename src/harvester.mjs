@@ -238,6 +238,9 @@ function createStatement(value, title, revid, job) {
       let unit = job.unit !== "1" ? `http://www.wikidata.org/entity/${job.unit}` : job.unit;
       datavalue = `{"value":{"amount":"${value}","unit":"${unit}"},"type":"quantity"}`;
       break;
+    case "monolingualtext":
+      datavalue = `{"value":{"text":"${value}","language":"${job.monolanguage}"},"type":"monolingualtext"}`;
+      break;
     default:
       datavalue = `{"value": "${value}","type": "string"}`;
       break;

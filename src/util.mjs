@@ -49,7 +49,7 @@ function parseDate(datestring) {
 
 function createSQLconnectionReplica(database) {
   const connection = mysql.createConnection({
-    host: "enwiki.analytics.db.svc.eqiad.wmflabs",
+    host: `${database}.web.db.svc.wikimedia.cloud`,
     user: credentials.sqluser,
     password: credentials.sqlpwd,
     database: `${database}_p`,

@@ -416,30 +416,34 @@ function harvester(req, res) {
         return new Promise((resolve, reject) => reject("page not found"));
       }
       revid = response.data.query.pages[m.pageid].revisions[0].revid;
-      let params = parseMediawikiTemplate(
-        response.data.query.pages[m.pageid].revisions[0].slots.main["*"],
-        job.templateprefixes,
-        job.templateredirects,
-        job.template
-      );
-      if (params === null) {
-        return new Promise((resolve, reject) => reject("template not found"));
-      }
-      if (job.parameters.length !== 0) {
-        for (let pp of job.parameters) {
-          if (pp in params) {
-            rawValue = params[pp];
-            break;
-          }
-        }
+      if (job.pagetitle) {
+        rawValue = response.data.query.pages[m.pageid].title;
       } else {
-        //if multiple parameters need to be parsed, e.g. dates
-        if (job.aparameter1 && job.aparameter1 in params) {
-          rawValue = [params[job.aparameter1]];
-          if (job.aparameter2 && job.aparameter2 in params) {
-            rawValue.push(params[job.aparameter2]);
-            if (job.aparameter3 && job.aparameter3 in params) {
-              rawValue.push(params[job.aparameter3]);
+        let params = parseMediawikiTemplate(
+          response.data.query.pages[m.pageid].revisions[0].slots.main["*"],
+          job.templateprefixes,
+          job.templateredirects,
+          job.template
+        );
+        if (params === null) {
+          return new Promise((resolve, reject) => reject("template not found"));
+        }
+        if (job.parameters.length !== 0) {
+          for (let pp of job.parameters) {
+            if (pp in params) {
+              rawValue = params[pp];
+              break;
+            }
+          }
+        } else {
+          //if multiple parameters need to be parsed, e.g. dates
+          if (job.aparameter1 && job.aparameter1 in params) {
+            rawValue = [params[job.aparameter1]];
+            if (job.aparameter2 && job.aparameter2 in params) {
+              rawValue.push(params[job.aparameter2]);
+              if (job.aparameter3 && job.aparameter3 in params) {
+                rawValue.push(params[job.aparameter3]);
+              }
             }
           }
         }
